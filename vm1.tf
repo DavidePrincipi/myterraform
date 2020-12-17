@@ -10,14 +10,14 @@ resource "digitalocean_droplet" "vm1" {
   ]
 
   connection {
-    type     = "ssh"
-    user     = "root"
-    host     = self.ipv4_address
-    agent    = true
+    type  = "ssh"
+    user  = "root"
+    host  = self.ipv4_address
+    agent = true
   }
 
   provisioner "file" {
-    content = random_password.root.result
+    content     = random_password.root.result
     destination = "/root/.pw"
   }
 
@@ -45,14 +45,14 @@ resource "digitalocean_record" "vm1_ipv4" {
 }
 
 resource "random_password" "root" {
-  length = 16
-  min_lower = 1
-  min_upper = 1
+  length      = 16
+  min_lower   = 1
+  min_upper   = 1
   min_special = 1
   min_numeric = 1
 }
 
 output "root_password" {
   description = "Random root password"
-  value = random_password.root.result
+  value       = random_password.root.result
 }
