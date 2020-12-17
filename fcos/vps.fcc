@@ -1,0 +1,30 @@
+variant: fcos
+version: 1.2.0
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgBKmRqyvhnX4NUFzqRKUd3m34a7GRARGH6AAM8XdIF5uyhOy355D1HbTwjaSTBSN1Mm7k2GeRl7deBVzOfF/GWz0OoyMmha4424vrmr7BeBWA2ToVPTkVuUpu+OmwuBpoZKYCCCYqq88NYri3gt161q5sYLKkoRfvYzMjN4Oe2qMPyOGDxL8Xu57h3hlzwMp2TsRv34vOSU/TtiVkU9Ec4+eSKGsps8wZuiXjVjiJBj1B+s++sCdHSsD+eImJrJVdo1N52MEKtryR4bhXA2fnJAmJ7QTPyeduyC1V45SWnHzC5J5qIzCZ4NHYd6ERJLgS5PIN8/Upc2F6JfzcWGch" 
+systemd:
+  units:
+    - name: cgroups-v2-karg.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Switch To cgroups v2
+        # We run after `systemd-machine-id-commit.service` to ensure that
+        # `ConditionFirstBoot=true` services won't rerun on the next boot.
+        After=systemd-machine-id-commit.service
+        ConditionKernelCommandLine=systemd.unified_cgroup_hierarchy
+        ConditionPathExists=!/var/lib/cgroups-v2-karg.stamp
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/bin/rpm-ostree kargs --delete=systemd.unified_cgroup_hierarchy
+        ExecStart=/bin/touch /var/lib/cgroups-v2-karg.stamp
+        ExecStart=/bin/systemctl --no-block reboot
+
+        [Install]
+        WantedBy=multi-user.target
+
