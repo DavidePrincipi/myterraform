@@ -1,6 +1,6 @@
-resource "digitalocean_droplet" "vm1" {
+resource "digitalocean_droplet" "vps" {
   image              = data.digitalocean_image.image_nscom.id
-  name               = "vm1"
+  name               = var.host
   region             = "ams3"
   size               = "s-1vcpu-1gb"
   ipv6               = false
@@ -29,18 +29,18 @@ resource "digitalocean_droplet" "vm1" {
   }
 }
 
-resource "digitalocean_project_resources" "vm1" {
+resource "digitalocean_project_resources" "vps" {
   project = data.digitalocean_project.default.id
   resources = [
-    digitalocean_droplet.vm1.urn
+    digitalocean_droplet.vps.urn
   ]
 }
 
-resource "digitalocean_record" "vm1_ipv4" {
+resource "digitalocean_record" "vps_ipv4" {
   type   = "A"
   domain = data.digitalocean_domain.default.name
-  value  = digitalocean_droplet.vm1.ipv4_address
-  name   = "vm1"
+  value  = digitalocean_droplet.vps.ipv4_address
+  name   = var.host
   ttl    = 300
 }
 

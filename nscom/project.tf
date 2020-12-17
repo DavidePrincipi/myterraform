@@ -7,6 +7,10 @@ variable "domain" {
   default     = "nethserver.net"
 }
 
+variable "host" {
+  description = "Host name for the VPS"
+}
+
 data "digitalocean_image" "image_nscom" {
   name = "nethserver-7.9.2009"
 }
