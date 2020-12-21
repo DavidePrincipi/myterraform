@@ -11,17 +11,10 @@ terraform {
   }
 }
 
-variable "do_token" {
-  description = "DigitalOcean access token"
-}
-variable "do_key" {
+variable "sshkey" {
   description = "DigitalOcean SSH key name"
 }
 
-provider "digitalocean" {
-  token = var.do_token
-}
-
 data "digitalocean_ssh_key" "terraform" {
-  name = var.do_key
+  name = var.sshkey
 }

@@ -1,7 +1,7 @@
 resource "digitalocean_droplet" "vps" {
-  image              = data.digitalocean_image.image_nscom.id
+  image              = var.nsent ? data.digitalocean_image.image_nsent.id : data.digitalocean_image.image_nscom.id
   name               = var.host
-  region             = "ams3"
+  region             = var.region
   size               = "s-1vcpu-1gb"
   ipv6               = false
   private_networking = true
@@ -27,6 +27,17 @@ resource "digitalocean_droplet" "vps" {
       "rm -f /root/.pw"
     ]
   }
+}
+
+variable "region" {
+  description = "DO droplet region"
+  default = "ams3"
+}
+
+variable "nsent" {
+  type = bool
+  description = "Use or not the Enterprise base image"
+  default = false
 }
 
 resource "digitalocean_project_resources" "vps" {
