@@ -17,7 +17,7 @@ variable "region" {
 
 resource "digitalocean_custom_image" "fcos33_next" {
   name    = "FCOS33-next"
-  url     = "https://builds.coreos.fedoraproject.org/prod/streams/next/builds/33.20201214.1.0/x86_64/fedora-coreos-33.20201214.1.0-digitalocean.x86_64.qcow2.gz"
+  url     = "https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/33.20210117.3.2/x86_64/fedora-coreos-33.20210117.3.2-digitalocean.x86_64.qcow2.gz"
   regions = [var.region]
 }
 
