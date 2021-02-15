@@ -1,4 +1,5 @@
 *.auto.tfvars
+*.history
 .terraform*
 terraform.tfstate*
 terraform.tfstate
