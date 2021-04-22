@@ -7,7 +7,7 @@ resource "digitalocean_droplet" "vps" {
   image              = data.digitalocean_image.fc.id
   name               = var.host
   region             = var.region
-  size               = "s-1vcpu-2gb-intel"
+  size               = "s-1vcpu-1gb-intel"
   ipv6               = false
   private_networking = true
   ssh_keys = [
