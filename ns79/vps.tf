@@ -1,6 +1,6 @@
 resource "digitalocean_droplet" "vps" {
   image              = var.nsent ? data.digitalocean_image.image_nsent.id : data.digitalocean_image.image_nscom.id
-  name               = var.host
+  name               = format("%s.%s", var.host, var.domain)
   region             = var.region
   size               = "s-1vcpu-1gb-intel"
   ipv6               = false
