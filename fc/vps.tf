@@ -5,7 +5,7 @@ data "digitalocean_image" "fc" {
 
 resource "digitalocean_droplet" "vps" {
   image              = data.digitalocean_image.fc.id
-  name               = var.host
+  name               = format("%s.%s", var.host, var.domain)
   region             = var.region
   size               = "s-1vcpu-1gb-intel"
   ipv6               = false
