@@ -1,10 +1,15 @@
 
-data "digitalocean_image" "fc" {
-  slug = "fedora-33-x64"
+variable "images" {
+  description = "Map host name code to OS image"
+  default = {
+    "fc" = "fedora-34-x64",
+    "dn" = "84043396",
+    "ub" = "ubuntu-21-04-x64"
+  }
 }
 
 resource "digitalocean_droplet" "vps" {
-  image              = data.digitalocean_image.fc.id
+  image              = var.images[substr(var.host, 0, 2)]
   name               = format("%s.%s", var.host, var.domain)
   region             = var.region
   size               = "s-1vcpu-1gb-intel"
