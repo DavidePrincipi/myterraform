@@ -1,0 +1,43 @@
+#cloud-config
+package_update: true
+packages:
+ - curl
+ - jq
+ - git
+
+users:
+  - name: runner
+    sudo:  ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ${runner_pubk}
+
+ssh_authorized_keys:
+  - ${runner_pubk}
+
+write_files:
+  - path: /usr/local/sbin/gha-install
+    permissions: '0755'
+    encoding: b64
+    content: "${base64encode(file("gha-install.sh"))}"
+  - path: /etc/ssh/ssh_config.d/no_strict.conf
+    content: |
+      StrictHostKeyChecking no
+      UserKnownHostsFile /dev/null
+      LogLevel QUIET
+
+runcmd:
+  - |
+    ( umask 077
+    base64 -d <<<"${base64encode(runner_privk)}" > ~runner/.ssh/id_ecdsa
+    chown runner:runner ~runner/.ssh/id_ecdsa
+    base64 -d <<<"${base64encode(runner_privk)}" > ~/.ssh/id_ecdsa
+    )
+    runuser - runner -c gha-install <<EOF
+    ${github_repo}
+    ${github_user}
+    ${github_token}
+    EOF
+  - "loginctl enable-linger runner"
+
+power_state:
+  mode: reboot
