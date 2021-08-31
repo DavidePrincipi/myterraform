@@ -17,6 +17,12 @@ resource "digitalocean_firewall" "fw-ssh-only" {
 
   inbound_rule {
     protocol         = "tcp"
+    port_range       = "8000"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  inbound_rule {
+    protocol         = "tcp"
     port_range       = "443"
     source_addresses = ["0.0.0.0/0", "::/0"]
   }
