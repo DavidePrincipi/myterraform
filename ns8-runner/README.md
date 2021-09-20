@@ -2,7 +2,7 @@
 
 1. Create a `davidep.auto.tfvars` file, like the following:
 
-       do_key   = "davidep"
+       sshkey   = "davidep"
        do_token = "secret"
        project  = "github-runners"
        domain   = "ghrn.nethserver.net"

@@ -1,5 +1,5 @@
 resource "digitalocean_firewall" "fw-ssh-only" {
-  name = format("fw-%s", terraform.workspace)
+  name = format("fw-%s-%s", var.project, terraform.workspace)
 
   droplet_ids = [for hpx, rgn in var.nodes : digitalocean_droplet.vps[hpx].id]
 
