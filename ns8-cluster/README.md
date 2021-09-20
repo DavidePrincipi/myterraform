@@ -17,6 +17,15 @@
        # -> dn1.dp.nethserver.net
        # -> fc2.dp.nethserver.net
 
+4. Add another node to it:
+
+       terraform apply -var 'nodes={"dn1":"ams3","fc2":"sfo3","fc3":"lon1"}'
+       # -> fc3.dp.nethserver.net
+
+5. Destroy the cluster
+
+       terraform destroy -var 'nodes={}'
+
 To work with multiple cluster instances just add more Terraform
 workspaces. E.g.:
 
