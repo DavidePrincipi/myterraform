@@ -3,7 +3,7 @@ variable "images" {
   description = "Map host name code to OS image"
   default = {
     "fc" = "fedora-34-x64",
-    "dn" = "84043396",
+    "dn" = "debian-11-x64",
     "ub" = "ubuntu-21-04-x64"
   }
 }
