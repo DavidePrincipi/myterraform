@@ -19,6 +19,10 @@ resource "digitalocean_droplet" "vps" {
   ssh_keys = [
     data.digitalocean_ssh_key.terraform.id
   ]
+  user_data          = templatefile("cloud-init.yml", {
+    install_cmd = "curl https://raw.githubusercontent.com/NethServer/ns8-scratchpad/main/core/install.sh | bash",
+    join_cmd = "echo DONE",
+  })
 }
 
 resource "digitalocean_project_resources" "vps" {

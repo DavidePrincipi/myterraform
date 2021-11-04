@@ -1,0 +1,10 @@
+#cloud-config
+packages:
+ - curl
+ - jq
+ - git
+
+runcmd:
+ - |
+   ${install_cmd}
+   ${join_cmd}
