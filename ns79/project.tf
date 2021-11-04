@@ -7,16 +7,9 @@ variable "domain" {
   default     = "nethserver.net"
 }
 
-variable "host" {
+variable "nodes" {
   description = "Host name for the VPS"
-}
-
-data "digitalocean_image" "image_nscom" {
-  name = "nethserver-7.9.2009"
-}
-
-data "digitalocean_image" "image_nsent" {
-  name = "nethserver-enterprise-7.9.2009"
+  type        = map(string)
 }
 
 data "digitalocean_project" "default" {

@@ -1,7 +1,26 @@
+
+variable "images" {
+  description = "Map host name code to OS image"
+  default = {
+    "nscom" = "nethserver-7.9.2009",
+    "nsent" = "nethserver-enterprise-7.9.2009",
+  }
+}
+
+data "digitalocean_image" "nsimg" {
+  for_each = var.nodes
+  name     = var.images[substr(each.key, 0, 5)]
+}
+
+data "digitalocean_image" "image_nsent" {
+  name = "nethserver-enterprise-7.9.2009"
+}
+
 resource "digitalocean_droplet" "vps" {
-  image              = var.nsent ? data.digitalocean_image.image_nsent.id : data.digitalocean_image.image_nscom.id
-  name               = format("%s.%s", var.host, var.domain)
-  region             = var.region
+  for_each           = var.nodes
+  image              = data.digitalocean_image.nsimg[each.key].id
+  name               = format("%s.%s", each.key, var.domain)
+  region             = each.value
   size               = "s-1vcpu-1gb-intel"
   ipv6               = false
   private_networking = true
@@ -29,30 +48,18 @@ resource "digitalocean_droplet" "vps" {
   }
 }
 
-variable "region" {
-  description = "DO droplet region"
-  default = "ams3"
-}
-
-variable "nsent" {
-  type = bool
-  description = "Use or not the Enterprise base image"
-  default = false
-}
-
 resource "digitalocean_project_resources" "vps" {
-  project = data.digitalocean_project.default.id
-  resources = [
-    digitalocean_droplet.vps.urn
-  ]
+  project   = data.digitalocean_project.default.id
+  resources = [for hpx, rgn in var.nodes : digitalocean_droplet.vps[hpx].urn]
 }
 
 resource "digitalocean_record" "vps_ipv4" {
-  type   = "A"
-  domain = data.digitalocean_domain.default.name
-  value  = digitalocean_droplet.vps.ipv4_address
-  name   = var.host
-  ttl    = 300
+  for_each = var.nodes
+  type     = "A"
+  domain   = data.digitalocean_domain.default.name
+  value    = digitalocean_droplet.vps[each.key].ipv4_address
+  name     = each.key
+  ttl      = 300
 }
 
 resource "random_password" "root" {
