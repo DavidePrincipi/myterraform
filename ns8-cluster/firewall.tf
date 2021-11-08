@@ -1,6 +1,6 @@
 resource "digitalocean_firewall" "fw-ssh-only" {
-  for_each           = tomap({ for region in distinct(values(var.nodes)): region => region })
-  name               = format("%s.%s-fw.%s", terraform.workspace, each.key, var.domain)
+  for_each = tomap({ for region in distinct(values(var.nodes)) : region => region })
+  name     = format("%s.%s-fw.%s", terraform.workspace, each.key, var.domain)
 
   droplet_ids = [for hpx, rgn in var.nodes : digitalocean_droplet.vps[hpx].id if rgn == each.key]
 
@@ -40,15 +40,15 @@ resource "digitalocean_firewall" "fw-ssh-only" {
   }
 
   inbound_rule {
-    protocol              = "tcp"
-    port_range            = "1-65535"
-    source_addresses      = [digitalocean_vpc.private_network[each.key].ip_range]
+    protocol         = "tcp"
+    port_range       = "1-65535"
+    source_addresses = [digitalocean_vpc.private_network[each.key].ip_range]
   }
 
   inbound_rule {
-    protocol              = "udp"
-    port_range            = "1-65535"
-    source_addresses      = [digitalocean_vpc.private_network[each.key].ip_range]
+    protocol         = "udp"
+    port_range       = "1-65535"
+    source_addresses = [digitalocean_vpc.private_network[each.key].ip_range]
   }
 
   outbound_rule {

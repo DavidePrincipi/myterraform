@@ -9,25 +9,25 @@ variable "images" {
 }
 
 resource "digitalocean_vpc" "private_network" {
-  for_each           = tomap({ for region in distinct(values(var.nodes)): region => region })
-  name               = format("%s.%s-net.%s", terraform.workspace, each.key, var.domain)
-  region             = each.key
+  for_each = tomap({ for region in distinct(values(var.nodes)) : region => region })
+  name     = format("%s.%s-net.%s", terraform.workspace, each.key, var.domain)
+  region   = each.key
 }
 
 resource "digitalocean_droplet" "vps" {
-  for_each           = var.nodes
-  image              = var.images[substr(each.key, 0, 2)]
-  name               = format("%s.%s", each.key, var.domain)
-  region             = each.value
-  size               = "s-1vcpu-1gb-intel"
-  ipv6               = true
-  vpc_uuid           = digitalocean_vpc.private_network[each.value].id
+  for_each = var.nodes
+  image    = var.images[substr(each.key, 0, 2)]
+  name     = format("%s.%s", each.key, var.domain)
+  region   = each.value
+  size     = "s-1vcpu-1gb-intel"
+  ipv6     = true
+  vpc_uuid = digitalocean_vpc.private_network[each.value].id
   ssh_keys = [
     data.digitalocean_ssh_key.terraform.id
   ]
-  user_data          = templatefile("cloud-init.yml", {
+  user_data = templatefile("cloud-init.yml", {
     install_cmd = "curl https://raw.githubusercontent.com/NethServer/ns8-scratchpad/main/core/install.sh | bash",
-    join_cmd = "echo DONE",
+    join_cmd    = "echo DONE",
   })
 }
 
