@@ -26,7 +26,6 @@ resource "digitalocean_droplet" "vps" {
     data.digitalocean_ssh_key.terraform.id
   ]
   user_data = templatefile("cloud-init.yml", {
-    core_phash  = bcrypt(random_password.core[each.key].result)
     install_cmd = "curl https://raw.githubusercontent.com/NethServer/ns8-scratchpad/main/core/install.sh | bash",
     join_cmd    = "echo DONE",
   })
@@ -46,16 +45,3 @@ resource "digitalocean_record" "vps_ipv4" {
   ttl      = 300
 }
 
-resource "random_password" "core" {
-  for_each    = toset(keys(var.nodes))
-  length      = 16
-  min_lower   = 1
-  min_upper   = 1
-  min_special = 1
-  min_numeric = 1
-}
-
-output "secrets" {
-  description = "Generated passwords for the core user"
-  value       = { for k in keys(var.nodes) : k => random_password.core[k].result }
-}
