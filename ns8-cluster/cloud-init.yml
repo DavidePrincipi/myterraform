@@ -4,7 +4,14 @@ packages:
  - jq
  - git
 
+users:
+  - name: core
+    lock_passwd: false
+    passwd: "${core_phash}"
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
 runcmd:
  - |
+   sed -i '/^PasswordAuthentication / s/no/yes/' /etc/ssh/sshd_config && systemctl reload sshd
    ${install_cmd}
    ${join_cmd}
