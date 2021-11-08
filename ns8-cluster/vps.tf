@@ -23,7 +23,7 @@ resource "digitalocean_droplet" "vps" {
   ipv6     = true
   vpc_uuid = digitalocean_vpc.private_network[each.value].id
   ssh_keys = [
-    data.digitalocean_ssh_key.terraform.id
+    for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].id
   ]
   user_data = templatefile("cloud-init.yml", {
     install_cmd = "curl https://raw.githubusercontent.com/NethServer/ns8-scratchpad/main/core/install.sh | bash",

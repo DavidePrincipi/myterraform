@@ -2,7 +2,7 @@
 
 1. Create a `davidep.auto.tfvars` file, like the following:
 
-       sshkey   = "davidep"
+       sshkeys  = ["davidep"]
        do_token = "secret"
        project  = "davidep"
        domain   = "dp.nethserver.net"

@@ -11,8 +11,9 @@ terraform {
   }
 }
 
-variable "sshkey" {
+variable "sshkeys" {
   description = "DigitalOcean SSH key name"
+  type        = list(string)
 }
 
 provider "digitalocean" {
@@ -23,6 +24,7 @@ variable "do_token" {
   description = "DigitalOcean API token"
 }
 
-data "digitalocean_ssh_key" "terraform" {
-  name = var.sshkey
+data "digitalocean_ssh_key" "rootpkey" {
+  for_each = toset(var.sshkeys)
+  name     = each.value
 }
