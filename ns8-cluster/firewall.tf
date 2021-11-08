@@ -42,13 +42,13 @@ resource "digitalocean_firewall" "fw-ssh-only" {
   inbound_rule {
     protocol              = "tcp"
     port_range            = "1-65535"
-    source_addresses      = [var.wgnet, digitalocean_vpc.private_network[each.key].ip_range]
+    source_addresses      = [digitalocean_vpc.private_network[each.key].ip_range]
   }
 
   inbound_rule {
     protocol              = "udp"
     port_range            = "1-65535"
-    source_addresses      = [var.wgnet, digitalocean_vpc.private_network[each.key].ip_range]
+    source_addresses      = [digitalocean_vpc.private_network[each.key].ip_range]
   }
 
   outbound_rule {

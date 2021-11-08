@@ -12,11 +12,6 @@ variable "nodes" {
   type        = map(string)
 }
 
-variable "wgnet" {
-  description = "WireGuard VPN network"
-  default     = "10.5.4.0/24"
-}
-
 data "digitalocean_project" "default" {
   name = var.project
 }
