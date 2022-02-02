@@ -1,12 +1,16 @@
 
-variable "images" {
-  description = "Map host name code to OS image"
-  default = {
+locals {
+  //Map host name code to OS image
+  images = {
     "fc" = "fedora-34-x64",
-    "cs" = "100559116",
+    "cs" = data.digitalocean_image.centos.id,
     "dn" = "debian-11-x64",
     "ub" = "ubuntu-21-04-x64"
   }
+}
+
+data "digitalocean_image" "centos" {
+  name = "CentOS-Stream-GenericCloud-9-20220121.1"
 }
 
 resource "digitalocean_vpc" "private_network" {
@@ -17,7 +21,7 @@ resource "digitalocean_vpc" "private_network" {
 
 resource "digitalocean_droplet" "vps" {
   for_each = var.nodes
-  image    = var.images[substr(each.key, 0, 2)]
+  image    = local.images[substr(each.key, 0, 2)]
   name     = format("%s.%s", each.key, var.domain)
   region   = each.value
   size     = "s-2vcpu-2gb"
