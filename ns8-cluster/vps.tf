@@ -3,6 +3,7 @@ variable "images" {
   description = "Map host name code to OS image"
   default = {
     "fc" = "fedora-34-x64",
+    "cs" = "100559116",
     "dn" = "debian-11-x64",
     "ub" = "ubuntu-21-04-x64"
   }
@@ -20,7 +21,7 @@ resource "digitalocean_droplet" "vps" {
   name     = format("%s.%s", each.key, var.domain)
   region   = each.value
   size     = "s-2vcpu-2gb"
-  ipv6     = true
+  ipv6     = substr(each.key, 0, 2) == "cs" ? false : true
   vpc_uuid = digitalocean_vpc.private_network[each.value].id
   ssh_keys = [
     for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].id

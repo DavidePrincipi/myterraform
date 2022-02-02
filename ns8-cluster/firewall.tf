@@ -29,6 +29,12 @@ resource "digitalocean_firewall" "fw-ssh-only" {
   }
 
   inbound_rule {
+    protocol         = "tcp"
+    port_range       = "9090"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  inbound_rule {
     protocol         = "udp"
     port_range       = "55820"
     source_addresses = ["0.0.0.0/0", "::/0"]
