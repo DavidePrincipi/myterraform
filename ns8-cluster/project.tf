@@ -10,6 +10,7 @@ variable "domain" {
 variable "nodes" {
   description = "Host name for the VPS"
   type        = map(string)
+  default     = {}
 }
 
 data "digitalocean_project" "default" {
