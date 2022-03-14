@@ -13,6 +13,18 @@ variable "nodes" {
   default     = {}
 }
 
+variable "install_branch" {
+  description = "Name of code branch / image tag to install"
+  type        = string
+  default     = ""
+}
+
+variable "install_modules" {
+  description = "Name of modules to pull from the install_branch"
+  type        = string
+  default     = ""
+}
+
 data "digitalocean_project" "default" {
   name = var.project
 }

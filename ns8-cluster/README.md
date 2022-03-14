@@ -43,9 +43,18 @@ The `nodes` variable is a map. Each item represents a cluster node.
   * `dn` is for Debian
   * `fc` is for Fedora
   * `ub` is for Ubuntu
+  * `cs` is for CentOS Stream
 
 - The item _value_ selects the VPS region. Refer to `doctl compute region list` output for
   a list of valid region codes.
+
+## Install alternative branch
+
+The `install_branch` and `install_modules` variables select an alternative set
+of images from the given branch name. For instance, the following command
+fetches images of `core` and `dokuwiki` from branch `clone-rsyncd`:
+
+    terraform apply -var nodes='{"cs1":"ams3"}' -var install_branch=clone-rsyncd -var install_modules="core dokuwiki"
 
 ## Shared firewall configuration
 

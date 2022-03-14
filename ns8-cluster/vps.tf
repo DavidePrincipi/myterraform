@@ -31,8 +31,9 @@ resource "digitalocean_droplet" "vps" {
     for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].id
   ]
   user_data = templatefile("cloud-init.yml", {
-    install_cmd = "curl https://raw.githubusercontent.com/NethServer/ns8-scratchpad/main/core/install.sh | bash",
-    join_cmd    = "echo DONE",
+    install_branch = var.install_branch == "" ? "main" : var.install_branch
+    pull_branch    = var.install_branch
+    pull_modules   = var.install_branch == "" ? "" : var.install_modules
   })
 }
 

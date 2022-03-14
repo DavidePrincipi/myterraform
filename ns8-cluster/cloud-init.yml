@@ -3,8 +3,9 @@ packages:
  - curl
  - jq
  - git
+ - buildah
 
 runcmd:
  - |
-   ${install_cmd}
-   ${join_cmd}
+   set -x
+   curl https://raw.githubusercontent.com/NethServer/ns8-core/${install_branch}/core/install.sh | bash -s ${pull_branch} ${pull_modules}
