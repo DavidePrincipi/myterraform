@@ -1,6 +1,7 @@
 #cloud-config
 packages:
  - curl
+ - wget
  - jq
  - git
  - buildah
