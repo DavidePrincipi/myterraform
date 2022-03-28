@@ -3,14 +3,10 @@ locals {
   //Map host name code to OS image
   images = {
     "fc" = "fedora-34-x64",
-    "cs" = data.digitalocean_image.centos.id,
+    "cs" = "centos-stream-9-x64",
     "dn" = "debian-11-x64",
     "ub" = "ubuntu-21-04-x64"
   }
-}
-
-data "digitalocean_image" "centos" {
-  name = "CentOS-Stream-GenericCloud-9-20220121.1"
 }
 
 resource "digitalocean_vpc" "private_network" {
@@ -24,7 +20,7 @@ resource "digitalocean_droplet" "vps" {
   image    = local.images[substr(each.key, 0, 2)]
   name     = format("%s.%s", each.key, var.domain)
   region   = each.value
-  size     = "s-2vcpu-2gb"
+  size     = "s-2vcpu-2gb-intel"
   ipv6     = substr(each.key, 0, 2) == "cs" ? false : true
   vpc_uuid = digitalocean_vpc.private_network[each.value].id
   ssh_keys = [
