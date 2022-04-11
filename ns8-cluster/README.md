@@ -56,6 +56,11 @@ fetches images of `core` and `dokuwiki` from branch `clone-rsyncd`:
 
     terraform apply -var nodes='{"cs1":"ams3"}' -var install_branch=clone-rsyncd -var install_modules="core dokuwiki"
 
+## Enable swap space
+
+Set the `swapsz` variable to a positive integer to configure disk swap
+memory. One unit corresponds to one "Mebibyte" (1024*1024 bytes).
+
 ## Shared firewall configuration
 
 A shared firewall resource is applied to each node of `cluster0`. If a

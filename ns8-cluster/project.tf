@@ -25,6 +25,12 @@ variable "install_modules" {
   default     = ""
 }
 
+variable "swapsz" {
+  description = "Create a memory swapfile of the given size (MB)"
+  type = number
+  default = 0
+}
+
 data "digitalocean_project" "default" {
   name = var.project
 }
