@@ -6,6 +6,14 @@ packages:
  - git
  - buildah
 
+users:
+ - name: cloud-user
+   ssh_authorized_keys:
+     %{~ for sshkey in sshkeys ~}
+     - |
+       ${sshkey}
+     %{~ endfor ~}
+
 runcmd:
  - |
    set -x

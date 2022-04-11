@@ -30,6 +30,7 @@ resource "digitalocean_droplet" "vps" {
     install_branch = var.install_branch == "" ? "main" : var.install_branch
     pull_branch    = var.install_branch
     pull_modules   = var.install_branch == "" ? "" : var.install_modules
+    sshkeys        = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
   })
 }
 
