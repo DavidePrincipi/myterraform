@@ -16,6 +16,9 @@ users:
 
 runcmd:
  - |
+   set -x
+   runuser -u cloud-user -- ssh-keygen -t ecdsa -N '' -f ~cloud-user/.ssh/id_ecdsa
+   cat /home/cloud-user/.ssh/id_ecdsa.pub >> ~root/.ssh/authorized_keys
    %{~ if swapsz > 0 ~}
    echo "Setup swapfile..."
    dd if=/dev/zero of=/swapfile count=${swapsz} bs=1MiB
