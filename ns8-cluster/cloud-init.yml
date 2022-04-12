@@ -28,4 +28,4 @@ runcmd:
    echo '/swapfile   swap    swap    sw  0   0' >> /etc/fstab
    sysctl -w vm.swappiness=10 vm.vfs_cache_pressure=50 | tee /etc/sysctl.d/80-swapfile.conf
    %{~ endif ~}
-   curl https://raw.githubusercontent.com/NethServer/ns8-core/${install_branch}/core/install.sh | bash -s ${pull_branch} ${pull_modules}
+   curl '${install_url}' | bash -s ${install_args}

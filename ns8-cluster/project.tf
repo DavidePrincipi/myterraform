@@ -13,16 +13,16 @@ variable "nodes" {
   default     = {}
 }
 
-variable "install_branch" {
-  description = "Name of code branch / image tag to install"
+variable "install_url" {
+  description = "Download URL of install.sh"
   type        = string
-  default     = ""
+  default     = "https://raw.githubusercontent.com/NethServer/ns8-core/main/core/install.sh"
 }
 
-variable "install_modules" {
-  description = "Name of modules to pull from the install_branch"
+variable "install_args" {
+  description = "Arguments to the install script"
   type        = string
-  default     = ""
+  default     = "ghcr.io/nethserver/core:latest"
 }
 
 variable "swapsz" {
