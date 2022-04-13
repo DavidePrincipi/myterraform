@@ -4,7 +4,6 @@ packages:
  - wget
  - jq
  - git
- - buildah
 
 users:
  - name: cloud-user
