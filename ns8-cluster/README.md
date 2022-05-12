@@ -60,9 +60,3 @@ fetches images of `core` and `dokuwiki` from branch `clone-rsyncd`:
 
 Set the `swapsz` variable to a positive integer to configure disk swap
 memory. One unit corresponds to one "Mebibyte" (1024*1024 bytes).
-
-## Shared firewall configuration
-
-A shared firewall resource is applied to each node of `cluster0`. If a
-different firewall configuration is required by some node, create another
-firewall resource and assign it to that node.
