@@ -40,21 +40,23 @@ The `nodes` variable is a map. Each item represents a cluster node.
 
 - The item _key_ selects the OS type. Specify it followed by a number:
 
-  * `dn` is for Debian
-  * `fc` is for Fedora
-  * `ub` is for Ubuntu
-  * `cs` is for CentOS Stream
+  * `dn` is for Debian 11
+  * `cs` is for CentOS Stream 9
 
 - The item _value_ selects the VPS region. Refer to `doctl compute region list` output for
   a list of valid region codes.
 
-## Install alternative branch
+## Install alternative images
 
-The `install_branch` and `install_modules` variables select an alternative set
-of images from the given branch name. For instance, the following command
-fetches images of `core` and `dokuwiki` from branch `clone-rsyncd`:
+Set `install_url` to download an alternative install script. For instance
 
-    terraform apply -var nodes='{"cs1":"ams3"}' -var install_branch=clone-rsyncd -var install_modules="core dokuwiki"
+    terraform apply -var nodes='{"cs1":"ams3"}' -var install_url=http://myinstall.io/ns8-install.sh
+
+If the resource is not found, install is skipped
+
+Set `install_args` to a space-separated list of image URLs. Those image override the default ones, for instance:
+
+    terraform apply -var nodes='{"cs1":"ams3"}' -var install_args="ghcr.io/nethserver/core:newfeature ghcr.io/nethserver/traefik:newfeature"
 
 ## Enable swap space
 

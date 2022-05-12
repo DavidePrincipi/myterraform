@@ -2,10 +2,8 @@
 locals {
   //Map host name code to OS image
   images = {
-    "fc" = "fedora-34-x64",
     "cs" = "centos-stream-9-x64",
     "dn" = "debian-11-x64",
-    "ub" = "ubuntu-21-04-x64"
   }
 }
 
