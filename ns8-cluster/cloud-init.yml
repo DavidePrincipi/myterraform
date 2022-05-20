@@ -29,3 +29,4 @@ runcmd:
    %{~ endif ~}
    curl '${install_url}' | bash -s ${install_args}
    [ '${acme_staging}' = true ] && api-cli run module/traefik1/set-acme-server --data '{"url":"https://acme-staging-v02.api.letsencrypt.org/directory"}'
+   cat ~root/.ssh/authorized_keys >> /etc/nethserver/skel/.ssh/authorized_keys
