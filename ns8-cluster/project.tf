@@ -31,6 +31,12 @@ variable "swapsz" {
   default = 0
 }
 
+variable "acme_staging" {
+  description = "Configure Let's Encrypt Staging environment"
+  type = bool
+  default = true
+}
+
 data "digitalocean_project" "default" {
   name = var.project
 }

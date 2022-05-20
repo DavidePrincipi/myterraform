@@ -62,3 +62,8 @@ Set `install_args` to a space-separated list of image URLs. Those image override
 
 Set the `swapsz` variable to a positive integer to configure disk swap
 memory. One unit corresponds to one "Mebibyte" (1024*1024 bytes).
+
+## Acme staging environment
+
+Set `acme_staging=false` to disable the ACME staging environment and use
+the production one.

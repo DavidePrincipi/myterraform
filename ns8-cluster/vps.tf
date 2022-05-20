@@ -28,6 +28,7 @@ resource "digitalocean_droplet" "vps" {
     install_url    = var.install_url
     install_args   = var.install_args
     swapsz         = var.swapsz
+    acme_staging   = var.acme_staging
     sshkeys        = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
   })
 }
