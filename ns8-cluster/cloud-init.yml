@@ -5,6 +5,8 @@ packages:
  - jq
  - git
 
+timezone: UTC
+
 users:
  - name: cloud-user
    ssh_authorized_keys:
