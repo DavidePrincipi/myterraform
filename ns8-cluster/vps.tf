@@ -4,6 +4,7 @@ locals {
   images = {
     "cs" = "centos-stream-9-x64",
     "dn" = "debian-11-x64",
+    "rl" = "rockylinux-9-x64",
   }
 }
 
@@ -46,4 +47,3 @@ resource "digitalocean_record" "vps_ipv4" {
   name     = each.key
   ttl      = 300
 }
-
