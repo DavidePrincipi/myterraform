@@ -73,4 +73,5 @@ resource "random_password" "root" {
 output "root_password" {
   description = "Random root password"
   value       = random_password.root.result
+  sensitive   = true
 }
