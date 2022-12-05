@@ -25,7 +25,7 @@ resource "digitalocean_droplet" "vps" {
   ipv6               = false
   private_networking = true
   ssh_keys = [
-    data.digitalocean_ssh_key.terraform.id
+    for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].id
   ]
 
   connection {
@@ -46,6 +46,11 @@ resource "digitalocean_droplet" "vps" {
       "rm -f /root/.pw"
     ]
   }
+
+  user_data = templatefile("cloud-init.yml", {
+    swapsz         = var.swapsz
+    sshkeys        = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
+  })
 }
 
 resource "digitalocean_project_resources" "vps" {
