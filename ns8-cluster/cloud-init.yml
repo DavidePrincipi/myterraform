@@ -4,6 +4,7 @@ packages:
  - wget
  - jq
  - git
+ - tmux
 
 timezone: UTC
 
