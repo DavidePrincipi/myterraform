@@ -4,6 +4,11 @@ timezone: UTC
 packages:
 - tmux
 
+chpasswd:
+  expire: False
+  list: |
+    root:${root_password}
+
 users:
  - name: cloud-user
    ssh_authorized_keys:

@@ -1,4 +1,4 @@
-# Personal Terraform NS8 cluster environment
+# Personal Terraform NethServer workspace
 
 1. Create a `davidep.auto.tfvars` file, like the following:
 
@@ -42,6 +42,8 @@ The `nodes` variable is a map. Each item represents a cluster node.
 
   * `dn` is for Debian 11
   * `cs` is for CentOS Stream 9
+  * `nscom` is for NethServer 7 Community
+  * `nsent` is for NethServer 7 Enterprise
 
 - The item _value_ selects the VPS region. Refer to `doctl compute region list` output for
   a list of valid region codes.

@@ -27,14 +27,14 @@ variable "install_args" {
 
 variable "swapsz" {
   description = "Create a memory swapfile of the given size (MB)"
-  type = number
-  default = 0
+  type        = number
+  default     = 0
 }
 
 variable "acme_staging" {
   description = "Configure Let's Encrypt Staging environment"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 data "digitalocean_project" "default" {

@@ -6,6 +6,11 @@ packages:
  - git
  - tmux
 
+chpasswd:
+  expire: False
+  list: |
+    root:${root_password}
+
 timezone: UTC
 
 users:
