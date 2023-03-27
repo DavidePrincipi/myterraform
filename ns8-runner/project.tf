@@ -14,7 +14,7 @@ variable "nodes" {
 
 variable "github_repo" {
   type = string
-  default = "NethServer/ns8-scratchpad"
+  default = "NethServer/ns8-core"
 }
 
 variable "github_user" {
