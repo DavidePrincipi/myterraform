@@ -4,7 +4,7 @@ locals {
   images = {
     "cs"    = "9 Stream x64",
     "dn"    = "11 x64",
-    "rl"    = "RockyLinux 9.0 x64",
+    "rl"    = "9 x64",
     "nscom" = "nethserver-7.9.2009",
     "nsent" = "nethserver-enterprise-7.9.2009",
   }
