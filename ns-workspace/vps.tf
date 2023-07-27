@@ -3,8 +3,9 @@ locals {
   //Map host name code to OS image
   images = {
     "cs"    = "9 Stream x64",
-    "dn"    = "11 x64",
+    "dn"    = "12 x64",
     "rl"    = "9 x64",
+    "al"    = "AlmaLinux 9",
     "nscom" = "nethserver-7.9.2009",
     "nsent" = "nethserver-enterprise-7.9.2009",
   }
@@ -14,6 +15,7 @@ locals {
     "cs"    = "cloud-init-ns8.yml",
     "dn"    = "cloud-init-ns8.yml",
     "rl"    = "cloud-init-ns8.yml",
+    "al"    = "cloud-init-ns8.yml",
     "nscom" = "cloud-init-ns7.yml",
     "nsent" = "cloud-init-ns7.yml",
   }
@@ -23,6 +25,7 @@ locals {
     "cs"    = false,
     "dn"    = true,
     "rl"    = true,
+    "al"    = true,
     "nscom" = false,
     "nsent" = false,
   }
