@@ -78,6 +78,51 @@ resource "digitalocean_record" "vps_ipv4" {
   ttl      = 300
 }
 
+resource "digitalocean_record" "vps_webtop" {
+  for_each = var.nodes
+  type     = "CNAME"
+  domain   = data.digitalocean_domain.default.id
+  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
+  name     = format("webtop%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
+  ttl      = 300
+}
+
+resource "digitalocean_record" "vps_nextcloud" {
+  for_each = var.nodes
+  type     = "CNAME"
+  domain   = data.digitalocean_domain.default.id
+  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
+  name     = format("nextcloud%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
+  ttl      = 300
+}
+
+resource "digitalocean_record" "vps_dokuwiki" {
+  for_each = var.nodes
+  type     = "CNAME"
+  domain   = data.digitalocean_domain.default.id
+  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
+  name     = format("dokuwiki%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
+  ttl      = 300
+}
+
+resource "digitalocean_record" "vps_passwordcname" {
+  for_each = var.nodes
+  type     = "CNAME"
+  domain   = data.digitalocean_domain.default.id
+  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
+  name     = format("password%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
+  ttl      = 300
+}
+
+resource "digitalocean_record" "vps_roundcube" {
+  for_each = var.nodes
+  type     = "CNAME"
+  domain   = data.digitalocean_domain.default.id
+  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
+  name     = format("roundcube%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
+  ttl      = 300
+}
+
 resource "random_password" "root" {
   length      = 16
   min_lower   = 1
