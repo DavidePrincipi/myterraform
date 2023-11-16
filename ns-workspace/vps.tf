@@ -110,6 +110,15 @@ resource "digitalocean_record" "vps_nextcloud" {
   ttl      = 300
 }
 
+resource "digitalocean_record" "vps_collabora" {
+  for_each = var.nodes
+  type     = "CNAME"
+  domain   = data.digitalocean_domain.default.id
+  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
+  name     = format("collabora%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
+  ttl      = 300
+}
+
 resource "digitalocean_record" "vps_dokuwiki" {
   for_each = var.nodes
   type     = "CNAME"
