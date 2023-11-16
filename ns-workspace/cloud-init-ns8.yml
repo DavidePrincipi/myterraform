@@ -6,6 +6,8 @@ packages:
  - git
  - tmux
 
+ssh_pwauth: True
+
 chpasswd:
   expire: False
   list: |

@@ -37,6 +37,12 @@ variable "acme_staging" {
   default     = true
 }
 
+variable "root_password" {
+  description = "Default VPS root password. If empty, a random one is generated."
+  type        = string
+  default     = ""
+}
+
 data "digitalocean_project" "default" {
   name = var.project
 }
