@@ -43,6 +43,20 @@ resource "digitalocean_vpc" "private_network" {
   region   = each.key
 }
 
+resource "digitalocean_volume" "xvolume" {
+  for_each                = var.nodes
+  region                  = each.value
+  name                    = format("xvolume-%s", each.key)
+  size                    = 2
+  initial_filesystem_type = "xfs"
+}
+
+resource "digitalocean_volume_attachment" "xvolume_attach" {
+  for_each   = var.nodes
+  droplet_id = digitalocean_droplet.vps[each.key].id
+  volume_id  = digitalocean_volume.xvolume[each.key].id
+}
+
 resource "digitalocean_droplet" "vps" {
   for_each = var.nodes
   image    = data.digitalocean_image.nsimg[each.key].id
