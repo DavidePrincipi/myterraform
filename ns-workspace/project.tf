@@ -28,7 +28,7 @@ variable "install_args" {
 variable "swapsz" {
   description = "Create a memory swapfile of the given size (MB)"
   type        = number
-  default     = 0
+  default     = 4000
 }
 
 variable "acme_staging" {
