@@ -43,6 +43,12 @@ variable "root_password" {
   default     = ""
 }
 
+variable "do_requests_per_second" {
+  description = "DigitalOcean API requests per second -- This can be used to enable throttling, overriding the limit of API calls per second to avoid rate limit errors, can be disabled by setting the value to 0.0"
+  type        = number
+  default     = 10
+}
+
 data "digitalocean_project" "default" {
   name = var.project
 }

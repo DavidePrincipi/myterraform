@@ -18,6 +18,8 @@ variable "sshkeys" {
 
 provider "digitalocean" {
   token = var.do_token
+  requests_per_second = var.do_requests_per_second
+  http_retry_max = 5
 }
 
 variable "do_token" {
