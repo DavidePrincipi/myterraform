@@ -75,6 +75,7 @@ resource "digitalocean_droplet" "vps" {
     acme_staging  = var.acme_staging
     root_password = var.root_password != "" ? var.root_password : random_password.root.result
     sshkeys       = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
+    testing_modules = var.testing_modules ? "1" : "0"
   })
 }
 

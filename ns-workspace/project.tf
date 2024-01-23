@@ -57,3 +57,8 @@ data "digitalocean_domain" "default" {
   name = var.domain
 }
 
+variable "testing_modules" {
+  description = "Enable the testing versions in repository configuration"
+  type        = bool
+  default     = false
+}
