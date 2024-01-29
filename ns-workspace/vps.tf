@@ -46,7 +46,7 @@ resource "digitalocean_vpc" "private_network" {
 resource "digitalocean_volume" "xvolume" {
   for_each                = var.nodes
   region                  = each.value
-  name                    = format("xvolume-%s", each.key)
+  name                    = format("xvolume-%s-%s", terraform.workspace, each.key)
   size                    = 2
   initial_filesystem_type = "xfs"
 }
