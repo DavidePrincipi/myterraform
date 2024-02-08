@@ -47,7 +47,7 @@ resource "digitalocean_volume" "xvolume" {
   for_each                = var.nodes
   region                  = each.value
   name                    = format("xvolume-%s-%s", terraform.workspace, each.key)
-  size                    = 2
+  size                    = 4
   initial_filesystem_type = "xfs"
 }
 
@@ -69,12 +69,12 @@ resource "digitalocean_droplet" "vps" {
     for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].id
   ]
   user_data = templatefile(local.ci_template[trim(each.key, "0123456789")], {
-    install_url   = var.install_url
-    install_args  = var.install_args
-    swapsz        = var.swapsz
-    acme_staging  = var.acme_staging
-    root_password = var.root_password != "" ? var.root_password : random_password.root.result
-    sshkeys       = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
+    install_url     = var.install_url
+    install_args    = var.install_args
+    swapsz          = var.swapsz
+    acme_staging    = var.acme_staging
+    root_password   = var.root_password != "" ? var.root_password : random_password.root.result
+    sshkeys         = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
     testing_modules = var.testing_modules ? "1" : "0"
   })
 }
@@ -93,58 +93,18 @@ resource "digitalocean_record" "vps_ipv4" {
   ttl      = 300
 }
 
-resource "digitalocean_record" "vps_webtop" {
-  for_each = var.nodes
-  type     = "CNAME"
-  domain   = data.digitalocean_domain.default.id
-  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
-  name     = format("webtop%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
-  ttl      = 300
-}
-
-resource "digitalocean_record" "vps_nextcloud" {
-  for_each = var.nodes
-  type     = "CNAME"
-  domain   = data.digitalocean_domain.default.id
-  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
-  name     = format("nextcloud%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
-  ttl      = 300
-}
-
-resource "digitalocean_record" "vps_collabora" {
-  for_each = var.nodes
-  type     = "CNAME"
-  domain   = data.digitalocean_domain.default.id
-  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
-  name     = format("collabora%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
-  ttl      = 300
-}
-
-resource "digitalocean_record" "vps_dokuwiki" {
-  for_each = var.nodes
-  type     = "CNAME"
-  domain   = data.digitalocean_domain.default.id
-  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
-  name     = format("dokuwiki%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
-  ttl      = 300
-}
-
-resource "digitalocean_record" "vps_passwordcname" {
-  for_each = var.nodes
-  type     = "CNAME"
-  domain   = data.digitalocean_domain.default.id
-  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
-  name     = format("password%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
-  ttl      = 300
-}
-
-resource "digitalocean_record" "vps_roundcube" {
-  for_each = var.nodes
-  type     = "CNAME"
-  domain   = data.digitalocean_domain.default.id
-  value    = format("%s.", digitalocean_droplet.vps[each.key].name)
-  name     = format("roundcube%s", trim(each.key, "abcdefghijklmnopqrstuvwxyz"))
-  ttl      = 300
+resource "digitalocean_record" "vps_cname" {
+  for_each = tomap({
+      for tuple in setproduct(keys(var.nodes), var.cnames):
+    format("%s%d", tuple[1], trim(tuple[0], "abcdefghijklmnopqrstuvwxyz")) =>
+    format("%s.", digitalocean_droplet.vps[tuple[0]].name)
+  })
+  # Generates key-value couples like "webtop1" => "rl1.dp.nethserver.net."
+  type   = "CNAME"
+  domain = data.digitalocean_domain.default.id
+  name   = each.key
+  value  = each.value
+  ttl    = 300
 }
 
 resource "random_password" "root" {

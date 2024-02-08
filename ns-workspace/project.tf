@@ -62,3 +62,9 @@ variable "testing_modules" {
   type        = bool
   default     = false
 }
+
+variable "cnames" {
+  description = "List of DNS CNAME records for the node FQDN"
+  type = set(string)
+  default = []
+}
