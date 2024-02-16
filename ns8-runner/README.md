@@ -9,7 +9,7 @@
 
 2. Create and select a new workspace `pool0`
 
-       terraform workspace create pool0
+       terraform workspace new pool0
 
 3. Create two nodes for `pool0`
 
