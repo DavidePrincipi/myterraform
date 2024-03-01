@@ -31,6 +31,12 @@ variable "swapsz" {
   default     = 4000
 }
 
+variable "volumesz" {
+  description = "Create and attach a volume of the given size (GiB)"
+  type        = number
+  default     = 2
+}
+
 variable "acme_staging" {
   description = "Configure Let's Encrypt Staging environment"
   type        = bool

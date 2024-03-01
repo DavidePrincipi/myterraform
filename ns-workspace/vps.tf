@@ -47,7 +47,7 @@ resource "digitalocean_volume" "xvolume" {
   for_each                = var.nodes
   region                  = each.value
   name                    = format("xvolume-%s-%s", terraform.workspace, each.key)
-  size                    = 4
+  size                    = var.volumesz
   initial_filesystem_type = "xfs"
 }
 
