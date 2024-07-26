@@ -38,9 +38,16 @@ data "digitalocean_image" "nsimg" {
 }
 
 resource "digitalocean_vpc" "private_network" {
-  for_each = tomap({ for region in distinct(values(var.nodes)) : region => region })
+  for_each = toset([for region in distinct(values(var.nodes)): region ])
   name     = format("%s.%s-net.%s", terraform.workspace, each.key, var.domain)
   region   = each.key
+}
+
+# Prevent errors during vpc destroy. Wait a few seconds after all vps are
+# destroyed before destroying the private networks:
+resource "time_sleep" "vpc_destroy_delay" {
+  depends_on = [digitalocean_vpc.private_network]
+  destroy_duration = "5s"
 }
 
 resource "digitalocean_volume" "xvolume" {
@@ -58,6 +65,7 @@ resource "digitalocean_volume_attachment" "xvolume_attach" {
 }
 
 resource "digitalocean_droplet" "vps" {
+  depends_on = [time_sleep.vpc_destroy_delay]
   for_each = var.nodes
   image    = data.digitalocean_image.nsimg[each.key].id
   name     = format("%s.%s", each.key, var.domain)
