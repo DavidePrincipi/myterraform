@@ -47,7 +47,7 @@ resource "digitalocean_vpc" "private_network" {
 # destroyed before destroying the private networks:
 resource "time_sleep" "vpc_destroy_delay" {
   depends_on = [digitalocean_vpc.private_network]
-  destroy_duration = "5s"
+  destroy_duration = "10s"
 }
 
 resource "digitalocean_volume" "xvolume" {
