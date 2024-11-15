@@ -42,3 +42,4 @@ runcmd:
    [ '${acme_staging}' = true ] && /usr/local/bin/api-cli run module/traefik1/set-acme-server --data '{"url":"https://acme-staging-v02.api.letsencrypt.org/directory"}'
    mkdir -m 0700 -v -p /etc/nethserver/skel/.ssh
    cat ~root/.ssh/authorized_keys >> /etc/nethserver/skel/.ssh/authorized_keys
+   /usr/local/bin/api-cli run node/1/set-fqdn -d '{"hostname":"'$(hostname -s)'","domain":"'$(hostname -d)'"}'
