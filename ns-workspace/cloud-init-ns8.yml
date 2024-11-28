@@ -1,11 +1,4 @@
 #cloud-config
-packages:
- - curl
- - wget
- - jq
- - git
- - tmux
-
 ssh_pwauth: True
 
 chpasswd:
@@ -38,8 +31,9 @@ runcmd:
    sysctl -w vm.swappiness=10 vm.vfs_cache_pressure=50 | tee /etc/sysctl.d/80-swapfile.conf
    %{~ endif ~}
    echo "exclude=kernel* kmod* microcode_ctl grub2*" >> /etc/yum.conf
-   curl '${install_url}' | TESTING=${testing_modules} bash -s ${install_args}
+   { curl '${install_url}' || wget -q -O - '${install_url}' ; } | TESTING=${testing_modules} bash -s ${install_args}
    [ '${acme_staging}' = true ] && /usr/local/bin/api-cli run module/traefik1/set-acme-server --data '{"url":"https://acme-staging-v02.api.letsencrypt.org/directory"}'
    mkdir -m 0700 -v -p /etc/nethserver/skel/.ssh
    cat ~root/.ssh/authorized_keys >> /etc/nethserver/skel/.ssh/authorized_keys
    /usr/local/bin/api-cli run node/1/set-fqdn -d '{"hostname":"'$(hostname -s)'","domain":"'$(hostname -d)'"}'
+   dnf install -y jq git tmux || apt-get -y install jq git tmux
