@@ -28,3 +28,7 @@ runcmd:
    echo '/swapfile   swap    swap    sw  0   0' >> /etc/fstab
    sysctl -w vm.swappiness=10 vm.vfs_cache_pressure=50 | tee /etc/sysctl.d/80-swapfile.conf
    %{~ endif ~}
+   /sbin/e-smith/db networks setprop eth0 bootproto none role red gateway $(ip -4 -j route show default dev tun0 | jq -r .[0].gateway)
+   /sbin/e-smith/db networks setprop eth1 bootproto none
+   /sbin/e-smith/signal-event interface-update
+   /sbin/e-smith/signal-event firewall-adjust
