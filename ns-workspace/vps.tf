@@ -3,7 +3,7 @@ locals {
   //Map host name code to OS image
   images = {
     "cs"    = "9 Stream x64",
-    "dn"    = "12 x64",
+    "dn"    = "13 x64",
     "rl"    = "9 x64",
     "al"    = "AlmaLinux 9",
     "nscom" = "nethserver-7.9.2009",
