@@ -74,3 +74,9 @@ variable "cnames" {
   type = set(string)
   default = []
 }
+
+variable "sshport" {
+  description = "Public SSH port, configured by firewalld redirect"
+  type        = number
+  default     = 22
+}

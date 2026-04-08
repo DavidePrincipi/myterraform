@@ -21,6 +21,8 @@ runcmd:
    set -x
    runuser -u cloud-user -- ssh-keygen -t ecdsa -N '' -f ~cloud-user/.ssh/id_ecdsa
    cat /home/cloud-user/.ssh/id_ecdsa.pub >> ~root/.ssh/authorized_keys
+   mkdir -m 0700 -v -p /etc/nethserver/skel/.ssh
+   cat ~root/.ssh/authorized_keys >> /etc/nethserver/skel/.ssh/authorized_keys
    %{~ if swapsz > 0 ~}
    echo "Setup swapfile..."
    dd if=/dev/zero of=/swapfile count=${swapsz} bs=1MiB
@@ -33,7 +35,12 @@ runcmd:
    echo "exclude=kernel* kmod* microcode_ctl grub2*" >> /etc/yum.conf
    { curl '${install_url}' || wget -q -O - '${install_url}' ; } | TESTING=${testing_modules} bash -s ${install_args}
    [ '${acme_staging}' = true ] && /usr/local/bin/api-cli run module/traefik1/set-acme-server --data '{"url":"https://acme-staging-v02.api.letsencrypt.org/directory"}'
-   mkdir -m 0700 -v -p /etc/nethserver/skel/.ssh
-   cat ~root/.ssh/authorized_keys >> /etc/nethserver/skel/.ssh/authorized_keys
    /usr/local/bin/api-cli run node/1/set-fqdn -d '{"hostname":"'$(hostname -s)'","domain":"'$(hostname -d)'"}'
+   %{~ if sshport != 22 ~}
+   echo "Setup SSH port redirect: ${sshport} -> 22..."
+   firewall-cmd --permanent --add-forward-port=port=${sshport}:proto=tcp:toport=22
+   firewall-cmd --permanent --service=ssh --add-port=${sshport}/tcp
+   firewall-cmd --permanent --service=ssh --remove-port=22/tcp
+   firewall-cmd --reload
+   %{~ endif ~}
    dnf install -y jq git tmux || apt-get -y install jq git tmux
