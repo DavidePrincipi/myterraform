@@ -69,3 +69,23 @@ memory. One unit corresponds to one "Mebibyte" (1024*1024 bytes).
 
 Set `acme_staging=false` to disable the ACME staging environment and use
 the production one.
+
+## Create the cluster and register it on my.nethesis.it
+
+Set `my_token` to a my.nethesis.it API token (`myk_...`) and
+`my_organization_id` to the Customer ID the system belongs to.
+For example put in your personal `.auto.tfvars` file:
+
+    my_token = "****"
+    my_organization_id = "yxxhqrlc7sjd"
+
+For each node Terraform creates a my.nethesis.it system named after the
+node FQDN under `my_organization_id`, and passes its secret to cloud-init.
+The node then runs `create-cluster` with the default admin credentials and
+registers the cluster with `set-subscription`.
+
+    terraform apply -var nodes='{"rl1":"ams3"}' -var my_token='myk_xxx.yyy'
+
+`my_url` selects the my.nethesis.it instance (default is the beta one).
+The systems are deleted from my.nethesis.it on `terraform destroy`, so
+keep `my_token` set when destroying.

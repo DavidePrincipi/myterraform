@@ -64,6 +64,26 @@ resource "digitalocean_volume_attachment" "xvolume_attach" {
   volume_id  = digitalocean_volume.xvolume[each.key].id
 }
 
+# Register a my.nethesis.it system for each node: the system secret is
+# passed to cloud-init and the system is deleted on destroy
+resource "restapi_object" "my_system" {
+  for_each = nonsensitive(var.my_token != "") ? var.nodes : {}
+  path     = "/systems"
+  data = jsonencode({
+    name            = format("%s.%s", each.key, var.domain)
+    organization_id = var.my_organization_id
+    notes           = ""
+    custom_data     = {}
+  })
+  ignore_all_server_changes = true
+}
+
+locals {
+  my_secrets = {
+    for k, o in restapi_object.my_system : k => sensitive(jsondecode(o.create_response).data.system_secret)
+  }
+}
+
 resource "digitalocean_droplet" "vps" {
   depends_on = [time_sleep.vpc_destroy_delay]
   for_each = var.nodes
@@ -85,6 +105,7 @@ resource "digitalocean_droplet" "vps" {
     sshkeys         = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
     testing_modules = var.testing_modules ? "1" : "0"
     sshport         = var.sshport
+    my_secret       = lookup(local.my_secrets, each.key, "")
   })
 }
 

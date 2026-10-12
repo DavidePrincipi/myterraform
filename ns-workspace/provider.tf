@@ -12,6 +12,10 @@ terraform {
       source = "hashicorp/time"
       version = "~> 0"
     }
+    restapi = {
+      source  = "Mastercard/restapi"
+      version = "~> 3"
+    }
   }
 }
 
@@ -33,4 +37,11 @@ variable "do_token" {
 data "digitalocean_ssh_key" "rootpkey" {
   for_each = toset(var.sshkeys)
   name     = each.value
+}
+
+provider "restapi" {
+  uri                   = "${var.my_url}/backend/api"
+  bearer_token          = var.my_token
+  id_attribute          = "data/id"
+  create_returns_object = true
 }

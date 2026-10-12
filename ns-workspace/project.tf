@@ -75,6 +75,25 @@ variable "cnames" {
   default = []
 }
 
+variable "my_token" {
+  description = "my.nethesis.it API token. If set, create the cluster and register it on my.nethesis.it"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "my_url" {
+  description = "my.nethesis.it base URL"
+  type        = string
+  default     = "https://beta.my.nethesis.it"
+}
+
+variable "my_organization_id" {
+  description = "my.nethesis.it organization ID of the registered systems"
+  type        = string
+  default     = ""
+}
+
 variable "sshport" {
   description = "Public SSH port, configured by firewalld redirect"
   type        = number

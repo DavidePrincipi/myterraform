@@ -44,3 +44,8 @@ runcmd:
    firewall-cmd --reload
    %{~ endif ~}
    dnf install -y jq git tmux || apt-get -y install jq git tmux
+   %{~ if my_secret != "" ~}
+   echo "Create the cluster and register it on my.nethesis.it..."
+   /usr/local/sbin/create-cluster $(hostname -f):55820 10.5.4.0/24 Nethesis,1234
+   /usr/local/bin/api-cli run cluster/set-subscription --data '{"subscription":{"auth_token":"${my_secret}"}}'
+   %{~ endif ~}
