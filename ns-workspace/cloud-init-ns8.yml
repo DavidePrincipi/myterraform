@@ -32,7 +32,9 @@ runcmd:
    echo '/swapfile   swap    swap    sw  0   0' >> /etc/fstab
    sysctl -w vm.swappiness=10 vm.vfs_cache_pressure=50 | tee /etc/sysctl.d/80-swapfile.conf
    %{~ endif ~}
+   %{~ if !kernel_update ~}
    echo "exclude=kernel* kmod* microcode_ctl grub2*" >> /etc/yum.conf
+   %{~ endif ~}
    { curl '${install_url}' || wget -q -O - '${install_url}' ; } | TESTING=${testing_modules} bash -s ${install_args}
    [ '${acme_staging}' = true ] && /usr/local/bin/api-cli run module/traefik1/set-acme-server --data '{"url":"https://acme-staging-v02.api.letsencrypt.org/directory"}'
    /usr/local/bin/api-cli run node/1/set-fqdn -d '{"hostname":"'$(hostname -s)'","domain":"'$(hostname -d)'"}'
@@ -49,3 +51,9 @@ runcmd:
    /usr/local/sbin/create-cluster $(hostname -f):55820 10.5.4.0/24 Nethesis,1234
    /usr/local/bin/api-cli run cluster/set-subscription --data '{"subscription":{"auth_token":"${my_secret}"}}'
    %{~ endif ~}
+%{ if kernel_update ~}
+
+power_state:
+  mode: reboot
+  message: Reboot to apply the kernel updates
+%{ endif ~}

@@ -65,6 +65,16 @@ Set `install_args` to a space-separated list of image URLs. Those image override
 Set the `swapsz` variable to a positive integer to configure disk swap
 memory. One unit corresponds to one "Mebibyte" (1024*1024 bytes).
 
+## Kernel updates
+
+The NS8 install applies all pending OS updates, kernel included, and
+cloud-init reboots the node at the end of the procedure. For a faster
+provisioning set `kernel_update=false`: kernel, kmod, microcode and grub2
+packages are excluded from DNF updates (no effect on Debian) and no
+reboot occurs.
+
+    terraform apply -var nodes='{"rl1":"ams3"}' -var kernel_update=false
+
 ## Acme staging environment
 
 Set `acme_staging=false` to disable the ACME staging environment and use

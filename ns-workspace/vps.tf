@@ -105,6 +105,7 @@ resource "digitalocean_droplet" "vps" {
     sshkeys         = [for k in var.sshkeys : data.digitalocean_ssh_key.rootpkey[k].public_key]
     testing_modules = var.testing_modules ? "1" : "0"
     sshport         = var.sshport
+    kernel_update   = var.kernel_update
     my_secret       = lookup(local.my_secrets, each.key, "")
   })
 }

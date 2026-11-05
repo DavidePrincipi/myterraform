@@ -99,3 +99,9 @@ variable "sshport" {
   type        = number
   default     = 22
 }
+
+variable "kernel_update" {
+  description = "Update kernel and boot packages, and reboot at the end of cloud-init"
+  type        = bool
+  default     = true
+}
