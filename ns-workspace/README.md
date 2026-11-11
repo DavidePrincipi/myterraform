@@ -60,6 +60,14 @@ Set `install_args` to a space-separated list of image URLs. Those image override
 
     terraform apply -var nodes='{"cs1":"ams3"}' -var install_args="ghcr.io/nethserver/core:newfeature ghcr.io/nethserver/traefik:newfeature"
 
+## Droplet size
+
+Set the `dropletsz` variable to a DigitalOcean size slug to change the
+droplet size (default `s-2vcpu-2gb-intel`). List the available slugs
+with `doctl compute size list`.
+
+    terraform apply -var nodes='{"rl1":"ams3"}' -var dropletsz=s-2vcpu-4gb
+
 ## Enable swap space
 
 Set the `swapsz` variable to a positive integer to configure disk swap

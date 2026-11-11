@@ -90,7 +90,7 @@ resource "digitalocean_droplet" "vps" {
   image    = data.digitalocean_image.nsimg[each.key].id
   name     = format("%s.%s", each.key, var.domain)
   region   = each.value
-  size     = "s-2vcpu-2gb-intel"
+  size     = var.dropletsz
   ipv6     = local.ipv6_enabled[trim(each.key, "0123456789")]
   vpc_uuid = digitalocean_vpc.private_network[each.value].id
   ssh_keys = [

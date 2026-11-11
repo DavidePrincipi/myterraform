@@ -37,6 +37,12 @@ variable "volumesz" {
   default     = 2
 }
 
+variable "dropletsz" {
+  description = "Droplet size slug (e.g. s-2vcpu-4gb)"
+  type        = string
+  default     = "s-2vcpu-2gb-intel"
+}
+
 variable "acme_staging" {
   description = "Configure Let's Encrypt Staging environment"
   type        = bool
