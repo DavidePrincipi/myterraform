@@ -32,9 +32,14 @@ variable "swapsz" {
 }
 
 variable "volumesz" {
-  description = "Create and attach a volume of the given size (GiB)"
+  description = "Create and attach a volume of the given size (GiB). Set 0 for no volume"
   type        = number
   default     = 2
+
+  validation {
+    condition     = var.volumesz >= 0
+    error_message = "The volumesz value must be 0 or greater."
+  }
 }
 
 variable "dropletsz" {

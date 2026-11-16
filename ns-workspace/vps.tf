@@ -50,8 +50,9 @@ resource "time_sleep" "vpc_destroy_delay" {
   destroy_duration = "10s"
 }
 
+# A volumesz of 0 means no additional volume
 resource "digitalocean_volume" "xvolume" {
-  for_each                = var.nodes
+  for_each                = var.volumesz > 0 ? var.nodes : {}
   region                  = each.value
   name                    = format("xvolume-%s-%s-%s", lower(var.project), terraform.workspace, each.key)
   size                    = var.volumesz
@@ -59,9 +60,9 @@ resource "digitalocean_volume" "xvolume" {
 }
 
 resource "digitalocean_volume_attachment" "xvolume_attach" {
-  for_each   = var.nodes
+  for_each   = digitalocean_volume.xvolume
   droplet_id = digitalocean_droplet.vps[each.key].id
-  volume_id  = digitalocean_volume.xvolume[each.key].id
+  volume_id  = each.value.id
 }
 
 # Register a my.nethesis.it system for each node: the system secret is
